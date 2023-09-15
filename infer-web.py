@@ -61,6 +61,7 @@ from my_utils import load_audio
 from train.process_ckpt import change_info, extract_small_model, merge, show_info
 from vc_infer_pipeline import VC
 from sklearn.cluster import MiniBatchKMeans
+from pathlib import Path
 
 import time
 import threading
@@ -174,9 +175,11 @@ def load_hubert():
 
 
 datasets_root = "datasets"
-weight_root = "weights"
+weight_root = "/tmp/rvc/weights/"
+weight_rootinfer = "weights"
 weight_uvr5_root = "uvr5_weights"
-index_root = "logs"
+index_root = "/tmp/rvc/logs/"
+index_rootinfer = "./logs/"
 fshift_root = "formantshiftcfg"
 audio_root = "audios"
 audio_others_root = "audio-others"
@@ -199,14 +202,14 @@ sup_audioext = {
 
 names = [
     os.path.join(root, file)
-    for root, _, files in os.walk(weight_root)
+    for root, _, files in os.walk(weight_rootinfer)
     for file in files
     if file.endswith((".pth", ".onnx"))
 ]
 
 indexes_list = [
     os.path.join(root, name)
-    for root, _, files in os.walk(index_root, topdown=False)
+    for root, _, files in os.walk(index_rootinfer, topdown=False)
     for name in files
     if name.endswith(".index") and "trained" not in name
 ]
@@ -290,7 +293,7 @@ def update_dataset_list(name):
 def get_indexes():
     indexes_list = [
         os.path.join(dirpath, filename)
-        for dirpath, _, filenames in os.walk(index_root)
+        for dirpath, _, filenames in os.walk(index_rootinfer)
         for filename in filenames
         if filename.endswith(".index") and "trained" not in filename
     ]
@@ -975,13 +978,13 @@ def get_vc(sid, to_return_protect0, to_return_protect1):
 def change_choices():
     names = [
         os.path.join(root, file)
-        for root, _, files in os.walk(weight_root)
+        for root, _, files in os.walk(weight_rootinfer)
         for file in files
         if file.endswith((".pth", ".onnx"))
     ]
     indexes_list = [
         os.path.join(root, name)
-        for root, _, files in os.walk(index_root, topdown=False)
+        for root, _, files in os.walk(index_rootinfer, topdown=False)
         for name in files
         if name.endswith(".index") and "trained" not in name
     ]
@@ -1000,13 +1003,13 @@ def change_choices():
 def change_choices2():
     names = [
         os.path.join(root, file)
-        for root, _, files in os.walk(weight_root)
+        for root, _, files in os.walk(weight_rootinfer)
         for file in files
         if file.endswith((".pth", ".onnx"))
     ]
     indexes_list = [
         os.path.join(root, name)
-        for root, _, files in os.walk(index_root, topdown=False)
+        for root, _, files in os.walk(index_rootinfer, topdown=False)
         for name in files
         if name.endswith(".index") and "trained" not in name
     ]
@@ -1106,7 +1109,7 @@ def update_fshift_presets(preset, qfrency, tmbre):
 def preprocess_dataset(trainset_dir, exp_dir, sr, n_p):
     sr = sr_dict[sr]
 
-    log_dir = os.path.join(now_dir, "logs", exp_dir)
+    log_dir = os.path.join("/tmp/rvc/", "logs", exp_dir)
     log_file = os.path.join(log_dir, "preprocess.log")
 
     os.makedirs(log_dir, exist_ok=True)
@@ -1150,7 +1153,8 @@ def preprocess_dataset(trainset_dir, exp_dir, sr, n_p):
 
 def extract_f0_feature(gpus, n_p, f0method, if_f0, exp_dir, version19, echl):
     gpus = gpus.split("-")
-    log_dir = f"{now_dir}/logs/{exp_dir}"
+    tmp_dir = "/tmp/rvc/"
+    log_dir = f"{tmp_dir}/logs/{exp_dir}"
     log_file = f"{log_dir}/extract_f0_feature.log"
     os.makedirs(log_dir, exist_ok=True)
     with open(log_file, "w") as f:
@@ -1295,7 +1299,7 @@ def click_train(
 ):
     with open("csvdb/stop.csv", "w+") as file:
         file.write("False")
-    log_dir = os.path.join(now_dir, "logs", exp_dir1)
+    log_dir = os.path.join("/tmp/rvc/", "logs", exp_dir1)
 
     os.makedirs(log_dir, exist_ok=True)
 
@@ -1388,7 +1392,7 @@ def click_train(
 
 
 def train_index(exp_dir1, version19):
-    exp_dir = os.path.join(now_dir, "logs", exp_dir1)
+    exp_dir = os.path.join("/tmp/rvc/", "logs", exp_dir1)
     os.makedirs(exp_dir, exist_ok=True)
 
     feature_dim = "256" if version19 == "v1" else "768"
@@ -1873,9 +1877,9 @@ def match_index(sid0: str) -> tuple:
     else:
         base_model_name = sid0name
 
-    sid_directory = os.path.join(index_root, base_model_name)
+    sid_directory = os.path.join(index_rootinfer, base_model_name)
     directories_to_search = [sid_directory] if os.path.exists(sid_directory) else []
-    directories_to_search.append(index_root)
+    directories_to_search.append(index_rootinfer)
 
     matching_index_files = []
 
