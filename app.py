@@ -27,16 +27,18 @@ i18n.print()
 
 config = Config()
 
-weight_root = "weights"
+weight_root = "/tmp/rvc/weights"
+weight_rootinfer = "/weights/"
 weight_uvr5_root = "uvr5_weights"
-index_root = "logs"
+index_root = "/tmp/rvc/logs/"
+index_rootinfer = "./logs/"
 names = []
 hubert_model = None
-for name in os.listdir(weight_root):
+for name in os.listdir(weight_rootinfer):
     if name.endswith(".pth"):
         names.append(name)
 index_paths = []
-for root, dirs, files in os.walk(index_root, topdown=False):
+for root, dirs, files in os.walk(index_rootinfer, topdown=False):
     for name in files:
         if name.endswith(".index") and "trained" not in name:
             index_paths.append("%s/%s" % (root, name))
@@ -72,7 +74,7 @@ def get_vc(sid):
                 torch.cuda.empty_cache()
             cpt = None
         return {"visible": False, "__type__": "update"}
-    person = "%s/%s" % (weight_root, sid)
+    person = "%s/%s" % (weight_rootinfer, sid)
     print("loading %s" % person)
     cpt = torch.load(person, map_location="cpu")
     tgt_sr = cpt["config"][-1]
