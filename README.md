@@ -1,3 +1,9 @@
+### Paperspace Free
+I edited some of the code to let paperspace users, esspecially those on free plans, send their trained logs to tmp log folders.
+Paperspace free users get aound 5gb of free space, this allows them to train without going over that limit.
+I wanted to do the same for the weights but I couldn't get it to work, but depending on many .pth files you set to save, it shouldn't be a problem.
+
+Inference still uses the base 5gb, as I had tried to set it up to use the tmp folders, but whenver I did, I would have to reload the web-ui everytime I downloaded a model for some reason.
 # 🍏 Applio-RVC-Fork
 Applio is a user-friendly fork of Mangio-RVC-Fork/RVC, designed to provide an intuitive interface, especially for newcomers.
 
