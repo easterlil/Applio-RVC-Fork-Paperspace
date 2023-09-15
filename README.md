@@ -1,6 +1,8 @@
 ## Applio-RVC-Fork for Paperspace
-[![Branch for Free Tier](https://github.com/easterlil/Applio-RVC-Fork-Paperspace/tree/Paperspace-Free-Tier)
-This Brnach is the main Applio-RVC-Fork without any edited code, mostly here to share my Paperspace NB
+This Branch is the main Applio-RVC-Fork without any edited code, mostly here to share my Paperspace NB
+* [Download Notebook](https://raw.githubusercontent.com/easterlil/Applio-RVC-Fork-Paperspace/main/Applio_Paperspace.ipynb)
+* If you are using Paperspace's Free Tier, please use this Branch
+* [Branch for Free Tier](https://github.com/easterlil/Applio-RVC-Fork-Paperspace/tree/Paperspace-Free-Tier)
 
 # 🍏 Applio-RVC-Fork
 Applio is a user-friendly fork of Mangio-RVC-Fork/RVC, designed to provide an intuitive interface, especially for newcomers.
