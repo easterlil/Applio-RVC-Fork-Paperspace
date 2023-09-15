@@ -1,4 +1,5 @@
 ### Paperspace Free
+Download Notebook File [![Applio_Paperspace-FreeTier.ipynb](https://raw.githubusercontent.com/easterlil/Applio-RVC-Fork-Paperspace/Paperspace-Free-Tier/Applio_Paperspace-FreeTier.ipynb)
 I edited some of the code to let paperspace users, esspecially those on free plans, send their trained logs to tmp log folders.
 Paperspace free users get aound 5gb of free space, this allows them to train without going over that limit.
 I wanted to do the same for the weights but I couldn't get it to work, but depending on many .pth files you set to save, it shouldn't be a problem.
